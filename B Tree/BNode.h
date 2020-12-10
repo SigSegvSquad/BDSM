@@ -3,22 +3,41 @@
 
 #include "../Utility.h"
 
+
 class BNode {
-public:
-    key *keys;
-    bool isLeaf;
-    int currKeys, minKeys, maxKeys;
+private:
+    int *keys;
+    int n, t;
     BNode **children;
+    bool isLeaf;
 
-    BNode (int minChildNum, bool leaf);
+public:
 
-    bool isFull();
+    BNode(int _t, bool _leaf);
+
+    BNode *search(int k);
+    int findKey(int k);
 
     void traverse();
-    BNode* search(key k);
-    void insertNonFull(key k);
-    void splitChild(int childNum, BNode *y);
-};
 
+    void insertNonFull(int k);
+
+    void splitChild(int i, BNode *y);
+
+    void remove(int k);
+    void removeFromLeaf(int idx);
+    void removeFromNonLeaf(int idx);
+
+    int getPredecessor(int idx);
+    int getSuccessor(int idx);
+
+    void merge(int idx);
+    void fill(int idx);
+
+    void borrowFromPrev(int idx);
+    void borrowFromNext(int idx);
+
+    friend class BTree;
+};
 
 #endif //BDSM_BNODE_H

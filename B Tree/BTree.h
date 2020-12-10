@@ -4,20 +4,20 @@
 #include "BNode.h"
 #include "../Utility.h"
 
+
 class BTree {
 private:
-    BNode *root = nullptr;
-    int minKeys;
+    BNode *root; 
+    int t;
 
 public:
-    BTree(int t);
+    explicit BTree(int _t);
 
-    BNode *search(key key);
+    BNode *search(int k) ;
 
-    void insert(key key);
+    void insert(int k);
+    void remove(int k);
     void traverse();
-    void remove();
-
 };
 
 #endif //BDSM_BTREE_H
