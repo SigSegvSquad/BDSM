@@ -11,11 +11,11 @@ class StudentDatabase {
 private:
     vector<Student*> studentData;
 public:
-    bool readInputBTree(int numLines, BTree *index);
+    bool readInputBTree(BTree *index);
     bool readInputBPlusTree(int numLines, BPlusTree *index);
 
-    void printStudent(Student *student);
-    Student *createStudentEntry(int rn, string fn, string ln, string g, int m);
+    static void printStudent(Student *student);
+    static Student *createStudentEntry(int rn, string fn, string ln, string g, int m);
 };
 
 

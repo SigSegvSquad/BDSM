@@ -2,7 +2,7 @@
 #include <utility>
 #include "Student.h"
 
-bool StudentDatabase::readInputBTree(int numLines, BTree *index) {
+bool StudentDatabase::readInputBTree(BTree *index) {
     ifstream dataFile("../Database/students.csv");
     int count = 0;
     vector<string> row;

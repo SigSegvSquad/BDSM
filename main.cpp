@@ -6,7 +6,7 @@
 int main() {
     BTree bTree(4);
     StudentDatabase studentDatabase;
-    studentDatabase.readInputBTree(4, &bTree);
+    studentDatabase.readInputBTree(&bTree);
 
     studentDatabase.printStudent(bTree.search(49));
     return 0;
