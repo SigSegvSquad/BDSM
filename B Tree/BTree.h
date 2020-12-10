@@ -13,9 +13,9 @@ private:
 public:
     explicit BTree(int _t);
 
-    BNode *search(int k) ;
+    Student *search(int k) ;
 
-    void insert(int k);
+    void insert(Student* student);
     void remove(int k);
     void traverse();
 };

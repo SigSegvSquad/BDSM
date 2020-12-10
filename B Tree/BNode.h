@@ -3,10 +3,10 @@
 
 #include "../Utility.h"
 
-
 class BNode {
 private:
     int *keys;
+    Student **studentIndex;
     int n, t;
     BNode **children;
     bool isLeaf;
@@ -15,12 +15,12 @@ public:
 
     BNode(int _t, bool _leaf);
 
-    BNode *search(int k);
+    Student *search(int k);
     int findKey(int k);
 
     void traverse();
 
-    void insertNonFull(int k);
+    void insertNonFull(Student *student);
 
     void splitChild(int i, BNode *y);
 
@@ -28,8 +28,8 @@ public:
     void removeFromLeaf(int idx);
     void removeFromNonLeaf(int idx);
 
-    int getPredecessor(int idx);
-    int getSuccessor(int idx);
+    Student * getPredecessor(int idx);
+    Student * getSuccessor(int idx);
 
     void merge(int idx);
     void fill(int idx);
