@@ -1,0 +1,3 @@
+C:/Users/vabha/Desktop/College/HA/BDSM/cmake-build-debug/CMakeFiles/BDSM.dir
+C:/Users/vabha/Desktop/College/HA/BDSM/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/vabha/Desktop/College/HA/BDSM/cmake-build-debug/CMakeFiles/rebuild_cache.dir
