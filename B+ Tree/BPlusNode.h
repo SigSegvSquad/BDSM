@@ -9,7 +9,7 @@
 // BP node
 class BPlusNode {
 public:
-    bool IS_LEAF;
+    bool isLeaf;
     int *key, size;
     BPlusNode** ptr;
     Student **studentIndex;

@@ -6,16 +6,13 @@
 
 class BPlusTree {
     BPlusNode* root;
-    void insertInternal(Student *,
-                        BPlusNode*,
-                        BPlusNode*);
+    void insertInternal(Student *, BPlusNode*, BPlusNode*);
     BPlusNode* findParent(BPlusNode*, BPlusNode*);
 
 public:
     BPlusTree();
     Student* search(int);
     void insert(Student *);
-    BPlusNode* getRoot();
 };
 
 

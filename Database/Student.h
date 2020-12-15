@@ -8,9 +8,8 @@
 
 
 class StudentDatabase {
-private:
-    vector<Student*> studentData;
 public:
+    vector<Student*> studentData;
     bool readInputBTree(BTree *index);
     bool readInputBPlusTree(BPlusTree *index);
 

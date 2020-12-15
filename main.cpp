@@ -5,6 +5,7 @@
 
 int main() {
     BPlusTree bPlusTree;
+    BTree bTree(4);
     StudentDatabase studentDatabase;
     studentDatabase.readInputBPlusTree(&bPlusTree);
 
