@@ -12,7 +12,7 @@ private:
     vector<Student*> studentData;
 public:
     bool readInputBTree(BTree *index);
-    bool readInputBPlusTree(int numLines, BPlusTree *index);
+    bool readInputBPlusTree(BPlusTree *index);
 
     static void printStudent(Student *student);
     static Student *createStudentEntry(int rn, string fn, string ln, string g, int m);

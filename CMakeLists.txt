@@ -3,4 +3,4 @@ project(BDSM)
 
 set(CMAKE_CXX_STANDARD 11)
 
-add_executable(BDSM main.cpp Utility.h "B Tree/BNode.cpp" "B Tree/BNode.h" "B Tree/BTree.cpp" "B Tree/BTree.h" "B+ Tree/BPlusTree.cpp" "B+ Tree/BPlusTree.h" "Database/Student.h" "Database/Student.cpp")
+add_executable(BDSM main.cpp Utility.h "B Tree/BNode.cpp" "B Tree/BNode.h" "B Tree/BTree.cpp" "B Tree/BTree.h" "B+ Tree/BPlusTree.cpp" "B+ Tree/BPlusTree.h" "B+ Tree/BPlusNode.cpp" "B+ Tree/BPlusNode.h" "Database/Student.h" "Database/Student.cpp")

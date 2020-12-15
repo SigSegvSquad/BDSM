@@ -1,13 +1,20 @@
-//
-// Created by op on 03/12/20.
-//
-
 #ifndef BDSM_NODE_H
 #define BDSM_NODE_H
 
 
-class Node {
+#include "../Utility.h"
 
+#define MAX 3
+
+// BP node
+class BPlusNode {
+public:
+    bool IS_LEAF;
+    int *key, size;
+    BPlusNode** ptr;
+    Student **studentIndex;
+    friend class BPlusTree;
+    BPlusNode();
 };
 
 

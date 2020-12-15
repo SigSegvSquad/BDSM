@@ -26,7 +26,7 @@ void BNode::remove(int k) {
             removeFromNonLeaf(idx);
     } else {
         if (isLeaf) {
-            cout << "The key " << k << " is does not exist in the tree\n";
+            cout << "The keys " << k << " is does not exist in the tree\n";
             return;
         }
         bool flag = (idx == n);
@@ -135,7 +135,7 @@ void BNode::borrowFromNext(int idx) {
     if (!(child->isLeaf))
         child->children[(child->n) + 1] = sibling->children[0];
 
-    //The first key from sibling is inserted into keys[idx]
+    //The first keys from sibling is inserted into keys[idx]
     keys[idx] = sibling->keys[0];
     studentIndex[idx] = sibling->studentIndex[0];
 
