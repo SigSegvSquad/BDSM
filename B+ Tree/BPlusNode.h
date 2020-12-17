@@ -8,12 +8,14 @@
 
 // BP node
 class BPlusNode {
-public:
-    bool isLeaf;
-    int *key, size;
+    bool IS_LEAF;
+    //int *key, size;
+    int size;
+    Student **student;
     BPlusNode** ptr;
-    Student **studentIndex;
     friend class BPlusTree;
+
+public:
     BPlusNode();
 };
 

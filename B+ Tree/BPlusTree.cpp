@@ -1,21 +1,39 @@
 #include "BPlusTree.h"
 
-BPlusTree::BPlusTree() {
-    root = nullptr;
+BPlusTree::BPlusTree()
+{
+    root = NULL;
 }
 
+// Function to find any element
+// in B+ Tree
+Student *BPlusTree::search(int x)
+{
 
-Student *BPlusTree::search(int x) {
-    if (root == nullptr) {
+    // If tree is empty
+    if (root == NULL) {
         cout << "Tree is empty\n";
-    } else {
-        BPlusNode *cursor = root;
-        while (!cursor->isLeaf) {
-            for (int i = 0; i < cursor->size; i++) {
-                if (x < cursor->key[i]) {
+    }
+
+        // Traverse to find the value
+    else {
+
+        BPlusNode* cursor = root;
+
+        // Till we reach leaf node
+        while (cursor->IS_LEAF == false) {
+
+            for (int i = 0;i < cursor->size; i++) {
+
+                // If the element to be
+                // found is not present
+                if (x < cursor->student[i]->rollNum) {
                     cursor = cursor->ptr[i];
                     break;
                 }
+
+                // If reaches end of the
+                // cursor node
                 if (i == cursor->size - 1) {
                     cursor = cursor->ptr[i + 1];
                     break;
@@ -23,42 +41,59 @@ Student *BPlusTree::search(int x) {
             }
         }
 
-        for (int i = 0; i < cursor->size; i++) {
-            if (cursor->key[i] == x) {
+        // Traverse the cursor and find
+        // the node with value x
+        for (int i = 0;
+             i < cursor->size; i++) {
+
+            // If found then return
+            if (cursor->student[i]->rollNum == x) {
                 cout << "Found\n";
-                return cursor->studentIndex[i];
+                return cursor->student[i];
             }
         }
 
+        // Else element is not present
         cout << "Not found\n";
     }
 }
 
+// Function to implement the Insert
+// Operation in B+ Tree
+void BPlusTree::insert(Student *student)
+{
 
-void BPlusTree::insert(Student *student) {
-    int x = student->rollNum;
-
-
-    if (root == nullptr) {
+    // If root is null then return
+    // newly created node
+    if (root == NULL) {
         root = new BPlusNode;
-        root->key[0] = x;
-        root->studentIndex[0] = student;
-        root->isLeaf = true;
+        root->student[0] = student;
+        root->IS_LEAF = true;
         root->size = 1;
-    } else {
-        BPlusNode *cursor = root;
-        BPlusNode *parent;
+    }
 
+        // Traverse the B+ Tree
+    else {
+        BPlusNode* cursor = root;
+        BPlusNode* parent;
 
-        while (!cursor->isLeaf) {
+        // Till cursor reaches the
+        // leaf node
+        while (!cursor->IS_LEAF) {
 
             parent = cursor;
 
             for (int i = 0;i < cursor->size;i++) {
-                if (x < cursor->key[i]) {
+
+                // If found the position
+                // where we have to insert
+                // node
+                if (student->rollNum < cursor->student[i]->rollNum) {
                     cursor = cursor->ptr[i];
                     break;
                 }
+
+                // If reaches the end
                 if (i == cursor->size - 1) {
                     cursor = cursor->ptr[i + 1];
                     break;
@@ -68,207 +103,259 @@ void BPlusTree::insert(Student *student) {
 
         if (cursor->size < MAX) {
             int i = 0;
-            while (x > cursor->key[i] && i < cursor->size) {
+            while (i < cursor->size && student->rollNum > cursor->student[i]->rollNum) {
                 i++;
             }
 
-            for (int j = cursor->size;
-                 j > i; j--) {
-                cursor->key[j] = cursor->key[j - 1];
-                cursor->studentIndex[j] = cursor->studentIndex[j - 1];
+            for (int j = cursor->size;j > i; j--) {
+                cursor->student[j] = cursor->student[j - 1];
             }
 
-            cursor->key[i] = x;
-            cursor->studentIndex[i] = student;
+            cursor->student[i] = student;
             cursor->size++;
 
             cursor->ptr[cursor->size] = cursor->ptr[cursor->size - 1];
-            cursor->ptr[cursor->size - 1] = nullptr;
-        } else {
+            cursor->ptr[cursor->size - 1] = NULL;
+        }
 
+        else {
 
-            auto *newLeaf = new BPlusNode;
+            // Create a newLeaf node
+            BPlusNode* newLeaf = new BPlusNode;
 
-            int virtualNode[MAX + 1];
-            Student *virtualStudent[MAX + 1];
+            Student *virtualNode[MAX + 1];
 
-
+            // Update cursor to virtual
+            // node created
             for (int i = 0; i < MAX; i++) {
-                virtualNode[i] = cursor->key[i];
-                virtualStudent[i] = cursor->studentIndex[i];
+                virtualNode[i] = cursor->student[i];
             }
             int i = 0, j;
 
-
-            while (x > virtualNode[i]
-                   && i < MAX) {
+            // Traverse to find where the new
+            // node is to be inserted
+            while (i < MAX && student->rollNum > virtualNode[i]->rollNum) {
                 i++;
             }
 
-            for (int virtualIter = MAX + 1; virtualIter > i; virtualIter--) {
-                virtualNode[virtualIter] = virtualNode[virtualIter - 1];
-                virtualStudent[virtualIter] = virtualStudent[virtualIter - 1];
+            // Update the current virtual
+            // Node to its previous
+            for (int j = MAX + 1;j > i; j--) {
+                virtualNode[j] = virtualNode[j - 1];
             }
 
-            virtualNode[i] = x;
-            virtualStudent[i] = student;
-
-            newLeaf->isLeaf = true;
+            virtualNode[i] = student;
+            newLeaf->IS_LEAF = true;
 
             cursor->size = (MAX + 1) / 2;
             newLeaf->size = MAX + 1 - (MAX + 1) / 2;
 
             cursor->ptr[cursor->size] = newLeaf;
+
             newLeaf->ptr[newLeaf->size] = cursor->ptr[MAX];
-            cursor->ptr[MAX] = nullptr;
 
+            cursor->ptr[MAX] = NULL;
 
+            // Update the current virtual
+            // Node's key to its previous
             for (i = 0; i < cursor->size; i++) {
-                cursor->key[i] = virtualNode[i];
-                cursor->studentIndex[i] = virtualStudent[i];
+                cursor->student[i] = virtualNode[i];
             }
 
-
-            for (i = 0, j = cursor->size; i < newLeaf->size; i++, j++) {
-                newLeaf->key[i] = virtualNode[j];
-                newLeaf->studentIndex[i] = virtualStudent[j];
+            // Update the newLeaf key to
+            // virtual Node
+            for (i = 0, j = cursor->size;
+                 i < newLeaf->size;
+                 i++, j++) {
+                newLeaf->student[i] = virtualNode[j];
             }
 
-
+            // If cursor is the root node
             if (cursor == root) {
-                auto *newRoot = new BPlusNode;
-                newRoot->key[0] = newLeaf->key[0];
-                newRoot->studentIndex[0] = newLeaf->studentIndex[0];
+
+                // Create a new Node
+                BPlusNode* newRoot = new BPlusNode;
+
+                // Update rest field of
+                // B+ Tree Node
+                newRoot->student[0] = newLeaf->student[0];
                 newRoot->ptr[0] = cursor;
                 newRoot->ptr[1] = newLeaf;
-                newRoot->isLeaf = false;
+                newRoot->IS_LEAF = false;
                 newRoot->size = 1;
                 root = newRoot;
-            } else {
-                insertInternal(newLeaf->studentIndex[0], parent, newLeaf);
+            }
+            else {
+
+                // Recursive Call for
+                // insert in internal
+                insertInternal(newLeaf->student[0],parent,newLeaf);
             }
         }
     }
 }
 
+// Function to implement the Insert
+// Internal Operation in B+ Tree
+void BPlusTree::insertInternal(Student *student,
+                               BPlusNode* cursor,
+                               BPlusNode* child)
+{
 
-void BPlusTree::insertInternal(Student *student, BPlusNode *cursor, BPlusNode *child) {
-    int x = student->rollNum;
-
+    // If we doesn't have overflow
     if (cursor->size < MAX) {
         int i = 0;
-        while (x > cursor->key[i] && i < cursor->size) {
+
+        // Traverse the child node
+        // for current cursor node
+        while (i < cursor->size && student->rollNum > cursor->student[i]->rollNum) {
             i++;
         }
-        for (int j = cursor->size; j > i; j--) {
-            cursor->key[j] = cursor->key[j - 1];
-            cursor->studentIndex[j] = cursor->studentIndex[j - 1];
+
+        // Traverse the cursor node
+        // and update the current key
+        // to its previous node key
+        for (int j = cursor->size;j > i; j--) {
+            cursor->student[j] = cursor->student[j - 1];
         }
 
-        for (int j = cursor->size + 1; j > i + 1; j--) {
+        // Traverse the cursor node
+        // and update the current ptr
+        // to its previous node ptr
+        for (int j = cursor->size + 1;j > i + 1; j--) {
             cursor->ptr[j] = cursor->ptr[j - 1];
         }
 
-        cursor->key[i] = x;
-        cursor->studentIndex[i] = student;
+        cursor->student[i] = student;
         cursor->size++;
         cursor->ptr[i + 1] = child;
+    }
 
-    } else {
-        auto *newInternal = new BPlusNode;
-        int virtualKey[MAX + 1];
-        Student *virtualStudent[MAX + 1];
-        BPlusNode *virtualPtr[MAX + 2];
+        // For overflow, break the node
+    else {
 
+        // For new Interval
+        BPlusNode* newInternal = new BPlusNode;
+        Student *virtualKey[MAX + 1];
+        BPlusNode* virtualPtr[MAX + 2];
 
+        // Insert the current list key
+        // of cursor node to virtualKey
         for (int i = 0; i < MAX; i++) {
-            virtualKey[i] = cursor->key[i];
-            virtualStudent[i] = cursor->studentIndex[i];
+            virtualKey[i] = cursor->student[i];
         }
 
-
+        // Insert the current list ptr
+        // of cursor node to virtualPtr
         for (int i = 0; i < MAX + 1; i++) {
             virtualPtr[i] = cursor->ptr[i];
         }
 
         int i = 0, j;
-        while (x > virtualKey[i] && i < MAX) {
+
+        // Traverse to find where the new
+        // node is to be inserted
+        while (i < MAX && student->rollNum > virtualKey[i]->rollNum) {
             i++;
         }
 
-        for (int virtualIter = MAX + 1; virtualIter > i; virtualIter--) {
-            virtualKey[virtualIter] = virtualKey[virtualIter - 1];
-            virtualStudent[virtualIter] = virtualStudent[virtualIter - 1];
+        // Traverse the virtualKey node
+        // and update the current key
+        // to its previous node key
+        for (int j = MAX + 1;j > i; j--) {
+            virtualKey[j] = virtualKey[j - 1];
         }
 
-        virtualKey[i] = x;
-        virtualStudent[i] = student;
+        virtualKey[i] = student;
 
-
-        for (int virtualIter = MAX + 2; virtualIter > i + 1; virtualIter--) {
-            virtualPtr[virtualIter] = virtualPtr[virtualIter - 1];
+        // Traverse the virtualKey node
+        // and update the current ptr
+        // to its previous node ptr
+        for (int j = MAX + 2;j > i + 1; j--) {
+            virtualPtr[j] = virtualPtr[j - 1];
         }
 
         virtualPtr[i + 1] = child;
-        newInternal->isLeaf = false;
+        newInternal->IS_LEAF = false;
+
         cursor->size = (MAX + 1) / 2;
+
         newInternal->size = MAX - (MAX + 1) / 2;
 
-        for (i = 0, j = cursor->size + 1; i < newInternal->size; i++, j++) {
-
-            newInternal->key[i] = virtualKey[j];
-            newInternal->studentIndex[i] = virtualStudent[j];
+        // Insert new node as an
+        // internal node
+        for (i = 0, j = cursor->size + 1;i < newInternal->size;i++, j++) {
+            newInternal->student[i] = virtualKey[j];
         }
 
-        for (i = 0, j = cursor->size + 1; i < newInternal->size + 1; i++, j++) {
+        for (i = 0, j = cursor->size + 1;i < newInternal->size + 1;i++, j++) {
             newInternal->ptr[i] = virtualPtr[j];
         }
 
-
+        // If cursor is the root node
         if (cursor == root) {
+            // Create a new root node
+            BPlusNode* newRoot = new BPlusNode;
 
-
-            auto *newRoot = new BPlusNode;
-
-
-            newRoot->key[0] = cursor->key[cursor->size];
-            newRoot->studentIndex[0] = cursor->studentIndex[cursor->size];
-
-
+            // Update key value
+            newRoot->student[0] = cursor->student[cursor->size];
+            // Update rest field of
+            // B+ Tree Node
             newRoot->ptr[0] = cursor;
             newRoot->ptr[1] = newInternal;
-            newRoot->isLeaf = false;
+            newRoot->IS_LEAF = false;
             newRoot->size = 1;
             root = newRoot;
-        } else {
-            insertInternal(cursor->studentIndex[cursor->size], findParent(root, cursor), newInternal);
+        }
+
+        else {
+
+            // Recursive Call to insert
+            // the data
+            insertInternal(cursor->student[cursor->size],findParent(root,cursor),newInternal);
         }
     }
 }
 
+// Function to find the parent node
+BPlusNode* BPlusTree::findParent(BPlusNode* cursor,BPlusNode* child)
+{
+    BPlusNode* parent;
 
-BPlusNode *BPlusTree::findParent(BPlusNode *cursor,
-                                 BPlusNode *child) {
-    BPlusNode *parent;
-
-
-    if (cursor->isLeaf
-        || (cursor->ptr[0])->isLeaf) {
-        return nullptr;
+    // If cursor reaches the end of Tree
+    if (cursor->IS_LEAF || (cursor->ptr[0])->IS_LEAF) {
+        return NULL;
     }
 
-
-    for (int i = 0; i < cursor->size + 1; i++) {
+    // Traverse the current node with
+    // all its child
+    for (int i = 0;i < cursor->size + 1; i++) {
+        // Update the parent for the
+        // child Node
         if (cursor->ptr[i] == child) {
             parent = cursor;
             return parent;
-        } else {
-            parent = findParent(cursor->ptr[i], child);
-            if (parent != nullptr)
+        }
+
+            // Else recursively traverse to
+            // find child node
+        else {
+            parent = findParent(cursor->ptr[i],child);
+
+            // If parent is found, then
+            // return that parent node
+            if (parent != NULL)
                 return parent;
         }
     }
 
+    // Return parent node
     return parent;
+}
+
+// Function to get the root Node
+BPlusNode* BPlusTree::getRoot()
+{
+    return root;
 }
 

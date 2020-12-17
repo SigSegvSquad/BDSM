@@ -1,9 +1,9 @@
 #include "BPlusNode.h"
 
-// Constructor of BPlusNode
+// Constructor of Node
 BPlusNode::BPlusNode()
 {
-    key = new int[MAX];
+    //key = new int[MAX];
+    student = new Student*[MAX];
     ptr = new BPlusNode*[MAX + 1];
-    studentIndex = new Student*[MAX];
 }
