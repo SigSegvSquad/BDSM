@@ -9,26 +9,11 @@ int main() {
     StudentDatabase studentDatabase;
     studentDatabase.readInputBPlusTree(&bPlusTree);
 
-    studentDatabase.printStudent(bPlusTree.search(71));
+    studentDatabase.printStudent(bPlusTree.search(2));
+    studentDatabase.printStudent(bPlusTree.search(11));
+    studentDatabase.printStudent(bPlusTree.search(27));
+    studentDatabase.printStudent(bPlusTree.search(68));
 
     return 0;
 }
 
-
-//int main()
-//{
-//    BPTree node;
-//
-//    // Create B+ Tree
-//    node.insert(6);
-//    node.insert(16);
-//    node.insert(26);
-//    node.insert(36);
-//    node.insert(46);
-//
-//    // Function Call to search node
-//    // with value 16
-//    node.search(46);
-//
-//    return 0;
-//}

@@ -39,7 +39,7 @@ bool StudentDatabase::readInputBTree(BTree *index) {
 
         student = createStudentEntry(stoi(row[0]), row[1], row[2], row[3], stoi(row[4]));
         studentData.push_back(student);
-        printStudent(student);
+        //printStudent(student);
         index->insert(studentData[count]);
         count++;
     }
@@ -63,7 +63,7 @@ bool StudentDatabase::readInputBPlusTree(BPlusTree *index){
 
         student = createStudentEntry(stoi(row[0]), row[1], row[2], row[3], stoi(row[4]));
         studentData.push_back(student);
-        printStudent(student);
+        //printStudent(student);
         index->insert(studentData[count]);
         count++;
     }
